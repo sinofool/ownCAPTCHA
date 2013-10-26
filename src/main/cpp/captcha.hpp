@@ -57,6 +57,21 @@ private:
   gdImagePtr _img;
 };
 
+class distorting {
+public:
+  template<typename T> distorting* merge(T old) {
+    gdImagePtr ext = gdImageCreateTrueColor(200, 200);
+    gdImageCopy(ext, old->img(), 0, 0, 0, 0, 200, 200);
+    this->_img = gdImageSquareToCircle(ext, 200);
+    return this;
+  };
+  gdImagePtr img() {
+    return _img;
+  };
+private:
+  gdImagePtr _img;
+};
+
 class save {
  public:
  save(const std::string& filename) :
