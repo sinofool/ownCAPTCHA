@@ -17,7 +17,15 @@ using Magick::Color;
 using Magick::Quantum;
 using Magick::Drawable;
 using Magick::DrawableText;
+using Magick::DrawableGravity;
+using Magick::CenterGravity;
 using Magick::DrawableFont;
+using Magick::DrawablePointSize;
+using Magick::DrawableRotation;
+using Magick::DrawableStrokeColor;
+using Magick::DrawableFillColor;
+using Magick::NormalStyle;
+using Magick::NormalStretch;
 
 class background {
 public:
@@ -52,7 +60,12 @@ public:
 	template<typename T> text* merge(T old) {
 		this->_img = old->img();
 		std::list<Drawable> txt;
-		txt.push_back(DrawableFont("*"));
+		txt.push_back(DrawableGravity(CenterGravity));
+		txt.push_back(DrawableRotation(_angle*(-180.0/3.14)));
+		txt.push_back(DrawableFont(_font));
+		txt.push_back(DrawablePointSize(_size));
+		txt.push_back(DrawableStrokeColor(Color(_rgb.r, _rgb.g, _rgb.b)));
+		txt.push_back(DrawableFillColor(Color(_rgb.r, _rgb.g, _rgb.b, 0)));
 		txt.push_back(DrawableText(_x, _y, _text));
 		_img->draw(txt);
 		return this;
