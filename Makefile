@@ -1,8 +1,8 @@
 
 CPP=g++
 
-CXXFLAGS=`Magick++-config --cppflags`
-LDFLAGS=`Magick++-config --ldflags`
+CXXFLAGS=`Magick++-config --cflags --cppflags`
+LDFLAGS=`Magick++-config --ldflags --libs`
 
 .PHONY: all
 .PHONY: clean
