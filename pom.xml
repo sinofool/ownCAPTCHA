@@ -17,8 +17,8 @@
 	</licenses>
 	<scm>
 		<url>https://github.com/sinofool/ownCAPTCHA</url>
-		<connection>scm:git:git@github.com:sinofool/owncaptcha.git</connection>
-		<developerConnection>scm:git:git@github.com:sinofool/owncaptcha.git</developerConnection>
+		<connection>scm:git:git@github.com:sinofool/ownCAPTCHA.git</connection>
+		<developerConnection>scm:git:git@github.com:sinofool/ownCAPTCHA.git</developerConnection>
 	</scm>
 	<developers>
 		<developer>
