@@ -207,8 +207,8 @@ public final class Captcha implements Serializable, CaptchaIF {
         	g.drawImage(_img, null, null);
         	
         	if (_addBorder) {
-        		int width = _img.getWidth();
-        		int height = _img.getHeight();
+        	    int width = _img.getWidth();
+        	    int height = _img.getHeight();
         		
 	            g.setColor(Color.BLACK);
 	            g.drawLine(0, 0, 0, width);
