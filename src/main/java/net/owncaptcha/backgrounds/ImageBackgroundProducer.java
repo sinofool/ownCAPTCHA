@@ -1,37 +1,26 @@
 package net.owncaptcha.backgrounds;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import net.owncaptcha.util.ImageUtil;
 
 public class ImageBackgroundProducer implements BackgroundProducer {
-    private BufferedImage image;
-    
-    public ImageBackgroundProducer(final String filename) throws IOException {
-        this.image = ImageIO.read(new File(filename));
-    }
+    private BufferedImage _image;
     
     public ImageBackgroundProducer(BufferedImage image) {
-        this.image = image;
-    }
-    
-    public ImageBackgroundProducer(BufferedImage image, int width, int height) {
-        this.image = ImageUtil.resize(image, width, height);
+        _image = image;
     }
 
     @Override
     public BufferedImage addBackground(BufferedImage image) {
-        return image;
+        return _image;
     }
 
     @Override
     public BufferedImage getBackground(int width, int height) {
-        if (image.getWidth() != width || image.getHeight() != height) {
-            return ImageUtil.resize(image, width, height);
+        if (_image.getWidth() != width || _image.getHeight() != height) {
+            return ImageUtil.resize(_image, width, height);
         } else {
-            return image;
+            return _image;
         }
     }
 }

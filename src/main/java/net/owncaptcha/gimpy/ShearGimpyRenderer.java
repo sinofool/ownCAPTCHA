@@ -10,6 +10,7 @@ public class ShearGimpyRenderer implements GimpyRenderer {
 
     private static final Random RAND = new SecureRandom();
     private final Color _color;
+    private boolean _fillBorderGap = true;
 
     public ShearGimpyRenderer() {
         this(Color.GRAY);
@@ -26,11 +27,15 @@ public class ShearGimpyRenderer implements GimpyRenderer {
         shearY(g, bi.getWidth(), bi.getHeight());
         g.dispose();
     }
+    
+    public void setFillBorderGap(boolean fillBorderGap)
+    {
+        _fillBorderGap = fillBorderGap;
+    }
 
     private void shearX(Graphics2D g, int w1, int h1) {
         int period = RAND.nextInt(10) + 5;
 
-        boolean borderGap = true;
         int frames = 15;
         int phase = RAND.nextInt(5) + 2;
 
@@ -39,7 +44,7 @@ public class ShearGimpyRenderer implements GimpyRenderer {
                     * Math.sin((double) i / (double) period
                             + (6.2831853071795862D * phase) / frames);
             g.copyArea(0, i, w1, 1, (int) d, 0);
-            if (borderGap) {
+            if (_fillBorderGap) {
                 g.setColor(_color);
                 g.drawLine((int) d, i, 0, i);
                 g.drawLine((int) d + w1, i, w1, i);
@@ -50,7 +55,6 @@ public class ShearGimpyRenderer implements GimpyRenderer {
     private void shearY(Graphics2D g, int w1, int h1) {
         int period = RAND.nextInt(30) + 10; // 50;
 
-        boolean borderGap = true;
         int frames = 15;
         int phase = 7;
         for (int i = 0; i < w1; i++) {
@@ -58,7 +62,7 @@ public class ShearGimpyRenderer implements GimpyRenderer {
                     * Math.sin((float) i / period
                             + (6.2831853071795862D * phase) / frames);
             g.copyArea(i, 0, 1, h1, 0, (int) d);
-            if (borderGap) {
+            if (_fillBorderGap) {
                 g.setColor(_color);
                 g.drawLine(i, (int) d, i, 0);
                 g.drawLine(i, (int) d + h1, i, h1);
