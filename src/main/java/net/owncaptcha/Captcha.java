@@ -9,13 +9,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.imageio.ImageIO;
-
 import net.owncaptcha.backgrounds.BackgroundProducer;
 import net.owncaptcha.backgrounds.TransparentBackgroundProducer;
 import net.owncaptcha.gimpy.GimpyRenderer;
 import net.owncaptcha.gimpy.RippleGimpyRenderer;
+import net.owncaptcha.image.producer.DefaultImageProducer;
+import net.owncaptcha.image.producer.ImageProducer;
+import net.owncaptcha.image.renderer.DefaultImageRenderer;
+import net.owncaptcha.image.renderer.ImageRenderer;
 import net.owncaptcha.noise.CurvedLineNoiseProducer;
 import net.owncaptcha.noise.NoiseProducer;
 import net.owncaptcha.text.producer.DefaultTextProducer;
@@ -146,6 +148,12 @@ public final class Captcha implements Serializable, CaptchaIF {
         	
         	return this;
         }
+        
+        public Builder addFixedText(TextProducer txtProd, WordRenderer wRenderer) {
+            wRenderer.render(txtProd.getText(), _img);
+
+            return this;
+        }
 
         /**
          * Add noise using the default {@link NoiseProducer} (a {@link CurvedLineNoiseProducer}).
@@ -188,6 +196,29 @@ public final class Captcha implements Serializable, CaptchaIF {
         	_addBorder = true;
 
             return this;
+        }
+        
+        public Builder addImage() {
+            return this.addImage(new DefaultImageProducer(), new DefaultImageRenderer());
+        }
+        
+        public Builder addImage(ImageProducer iProd) {
+            return this.addImage(iProd, new DefaultImageRenderer());
+        }
+        
+        public Builder addImage(ImageRenderer imageRenderer) {
+            return this.addImage(new DefaultImageProducer(), imageRenderer);
+        }
+        
+        public Builder addImage(ImageProducer iProd, ImageRenderer iRenderer) {
+            iRenderer.render(iProd.getImage(), _img);
+            
+            return this;
+        }
+        
+        public Graphics2D getGraphics()
+        {
+            return _bg.createGraphics();
         }
 
         /**
@@ -278,5 +309,9 @@ public final class Captcha implements Serializable, CaptchaIF {
     @Override
     public String toString() {
         return _builder.toString();
+    }
+    
+    public void setAnswer(String answer) {
+        _builder._answer = answer;
     }
 }
