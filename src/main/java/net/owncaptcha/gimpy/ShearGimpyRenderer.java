@@ -28,8 +28,7 @@ public class ShearGimpyRenderer implements GimpyRenderer {
         g.dispose();
     }
     
-    public void setFillBorderGap(boolean fillBorderGap)
-    {
+    public void setFillBorderGap(boolean fillBorderGap) {
         _fillBorderGap = fillBorderGap;
     }
 
