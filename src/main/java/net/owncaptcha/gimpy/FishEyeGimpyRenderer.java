@@ -14,6 +14,9 @@ public class FishEyeGimpyRenderer implements GimpyRenderer {
 	private final Color _hColor;
 	private final Color _vColor;
 	
+	private boolean _drawHorizonalStripes = true;
+	private boolean _drawVerticalStripes = true;
+	
 	public FishEyeGimpyRenderer() {
 		this(Color.BLACK, Color.BLACK);
 	}
@@ -21,6 +24,14 @@ public class FishEyeGimpyRenderer implements GimpyRenderer {
 	public FishEyeGimpyRenderer(Color hColor, Color vColor) {
 		_hColor = hColor;
 		_vColor = vColor;
+	}
+	
+	public void setDrawHorizonalStripes(boolean drawHorizonalStripes) {
+	    _drawHorizonalStripes = drawHorizonalStripes;
+	}
+	
+	public void setDrawVerticalStripes(boolean drawVerticalStripes) {
+	    _drawVerticalStripes = drawVerticalStripes;
 	}
 
 	@Override
@@ -37,15 +48,20 @@ public class FishEyeGimpyRenderer implements GimpyRenderer {
 
         Graphics2D graph = (Graphics2D) image.getGraphics();
         // Draw the horizontal stripes
-        for (int i = hspace; i < height; i = i + hspace) {
-            graph.setColor(_hColor);
-            graph.drawLine(0, i, width, i);
+        if (_drawHorizonalStripes) {
+            for (int i = hspace; i < height; i = i + hspace) {
+                graph.setColor(_hColor);
+                graph.drawLine(0, i, width, i);
+            }
         }
 
         // Draw the vertical stripes
-        for (int i = vspace; i < width; i = i + vspace) {
-            graph.setColor(_vColor);
-            graph.drawLine(i, 0, i, height);
+        if (_drawVerticalStripes)
+        {
+            for (int i = vspace; i < width; i = i + vspace) {
+                graph.setColor(_vColor);
+                graph.drawLine(i, 0, i, height);
+            }
         }
 
         // Create a pixel array of the original image.
