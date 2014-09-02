@@ -3,21 +3,22 @@ package net.owncaptcha.math;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.security.SecureRandom;
-import java.util.Date;
 import java.util.Random;
 
 import net.owncaptcha.CaptchaIF;
 import net.owncaptcha.backgrounds.BackgroundProducer;
 import net.owncaptcha.backgrounds.TransparentBackgroundProducer;
+import net.owncaptcha.gimpy.GimpyRenderer;
+import net.owncaptcha.gimpy.RippleGimpyRenderer;
 import net.owncaptcha.noise.CurvedLineNoiseProducer;
 import net.owncaptcha.noise.NoiseProducer;
 import net.owncaptcha.text.renderer.DefaultWordRenderer;
+import net.owncaptcha.text.renderer.WordRenderer;
 
 public class MathCaptcha implements CaptchaIF {
 
     public static final String NAME = "mathCaptcha";
-    private static final Random RAND = new SecureRandom();
+    private static final Random RAND = new Random();
 
     private Builder _builder;
     
@@ -39,6 +40,9 @@ public class MathCaptcha implements CaptchaIF {
         private String _answer;
         private int a;
         private int b;
+        
+        private WordRenderer _render = null;
+        private GimpyRenderer _gimp = null;
         
         public Builder(int width, int height) {
             _img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -89,6 +93,20 @@ public class MathCaptcha implements CaptchaIF {
             return this;
         }
 
+        public Builder addWordRendBuilder(final WordRenderer render) {
+        	this._render = render;
+        	return this;
+        }
+
+        public Builder gimp() {
+        	this._gimp = new RippleGimpyRenderer();
+        	return this;
+        }
+        public Builder gimp(GimpyRenderer gimpy) {
+            this._gimp = gimpy;
+            return this;
+        }
+
         public MathCaptcha build() {
         	if (_bg == null) {
         		_bg = new TransparentBackgroundProducer().getBackground(_img.getWidth(), _img.getHeight());
@@ -101,8 +119,12 @@ public class MathCaptcha implements CaptchaIF {
 
         	_img = _bg;
 
-        	new DefaultWordRenderer().render(_question, _img);
+        	(_render == null ? new DefaultWordRenderer():_render).render(_question, _img);
         	
+        	if (_gimp != null) {
+        		_gimp.gimp(_img);
+        	}
+
             return new MathCaptcha(this);
         }
 
