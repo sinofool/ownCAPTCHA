@@ -3,6 +3,8 @@ package net.owncaptcha.math;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.owncaptcha.CaptchaIF;
@@ -43,7 +45,8 @@ public class MathCaptcha implements CaptchaIF {
         
         private WordRenderer _render = null;
         private GimpyRenderer _gimp = null;
-        
+        private List<NoiseProducer> _noise = new ArrayList<NoiseProducer>();
+
         public Builder(int width, int height) {
             _img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -80,7 +83,8 @@ public class MathCaptcha implements CaptchaIF {
          * Add noise using the default {@link NoiseProducer} (a {@link CurvedLineNoiseProducer}).
          */
         public Builder addNoise() {
-            return this.addNoise(new CurvedLineNoiseProducer());
+            this._noise.add(new CurvedLineNoiseProducer());
+            return this;
         }
 
         /**
@@ -89,11 +93,11 @@ public class MathCaptcha implements CaptchaIF {
          * @param nProd
          */
         public Builder addNoise(NoiseProducer nProd) {
-            nProd.makeNoise(_img);
+            this._noise.add(nProd);
             return this;
         }
 
-        public Builder addWordRendBuilder(final WordRenderer render) {
+        public Builder setWordRenderer(final WordRenderer render) {
         	this._render = render;
         	return this;
         }
@@ -120,6 +124,10 @@ public class MathCaptcha implements CaptchaIF {
         	_img = _bg;
 
         	(_render == null ? new DefaultWordRenderer():_render).render(_question, _img);
+        	
+        	for (NoiseProducer nProd : _noise) {
+        		nProd.makeNoise(_img);
+        	}
         	
         	if (_gimp != null) {
         		_gimp.gimp(_img);
