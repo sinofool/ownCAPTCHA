@@ -5,7 +5,7 @@
 	<artifactId>owncaptcha</artifactId>
 	<packaging>jar</packaging>
 	<name>ownCAPTCHA</name>
-	<version>1.4-SNAPSHOT</version>
+	<version>1.4</version>
 	<description>Just another CAPTCHA service</description>
 	<url>http://www.owncaptcha.net</url>
 	<licenses>
